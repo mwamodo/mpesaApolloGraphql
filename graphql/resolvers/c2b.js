@@ -16,9 +16,12 @@ module.exports = {
           accountRef,
           TransactionType
         )
-        console.log(response.data);
-        // TODO: Check for success before returning true.
-        return true;
+
+        if(response.data.ResponseCode === '0'){
+          console.log(response.data);
+          return true;
+        } throw new UserInputError('Errors', "Transaction Not Complete");
+
       } catch (error) {
         inputError = error.response.data.errorMessage
         throw new UserInputError('Errors', { inputError });
