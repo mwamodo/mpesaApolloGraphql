@@ -1,4 +1,3 @@
-// TODO: Clean File. Take Mpesa class to another file.
 const { oAuth, lipaNaMpesaOnline } = require('./endPoints');
 const { request } = require('./helpers');
 
