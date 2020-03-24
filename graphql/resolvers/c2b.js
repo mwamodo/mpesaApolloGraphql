@@ -1,3 +1,4 @@
+const { UserInputError } = require('apollo-server');
 const { LipaNaMpesa } = require('../../mpesa');
 
 module.exports = {
@@ -15,13 +16,12 @@ module.exports = {
           accountRef,
           TransactionType
         )
-        // TODO: Get the errors when it fails. Errors will be included on the responses
-        console.log(response);
+        console.log(response.data);
         // TODO: Check for success before returning true.
         return true;
       } catch (error) {
-        console.log(error);
-        return false;
+        inputError = error.response.data.errorMessage
+        throw new UserInputError('Errors', { inputError });
       }
     }
   },
