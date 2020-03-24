@@ -1,6 +1,6 @@
 const axios =  require('axios');
 
-const { oAuth, lipaNaMpesaOnline } = require('./endpoints');
+const { oAuth, lipaNaMpesaOnline } = require('../graphql/mpesaEndPoints');
 
 class Mpesa {
   constructor(config = {}) {
