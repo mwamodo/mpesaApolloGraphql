@@ -1,6 +1,6 @@
-const axios =  require('axios');
-
-const { oAuth, lipaNaMpesaOnline } = require('../graphql/mpesaEndPoints');
+// TODO: Clean File. Take Mpesa class to another file.
+const { oAuth, lipaNaMpesaOnline } = require('./endPoints');
+const { request } = require('./helpers');
 
 class Mpesa {
   constructor(config = {}) {
@@ -29,58 +29,4 @@ const LipaNaMpesa = new Mpesa({
   lipaNaMpesaShortPass: "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919" // passKey
 });
 
-exports.mpesaWebHook = (req, res) => {
-  console.log(`---- Received M-Pesa webhook----`);
-  // dump the request payload received from safaricom
-  console.log(req.body);
-  console.log("-------------------");
-  let message = {
-    ResponseCode: "00000000",
-    ResponseDesc: "success"
-  };
-  // respond to safaricom servers with a success message
-  res.json(message);
-}
-
-exports.testPay = (req, res) => {
-  const senderMsisdn = req.params.PhoneNumber; // PhoneNumber
-  const amount = 10; // Amount
-  const callbackUrl = "https://us-central1-devsrkcreations.cloudfunctions.net/api/mpesa/hook"; // WebHook
-  const accountRef = "SRK CREATIONS"; // Account Ref
-  const TransactionType = "CustomerBuyGoodsOnline";
-  LipaNaMpesa.lipaNaMpesaOnline(
-    senderMsisdn,
-    amount,
-    callbackUrl,
-    accountRef,
-    TransactionType
-  )
-    .then(res => console.log(res))
-    .catch(err => console.error(err));
-}
-
-exports.Checkout = (req, res) => {
-  const senderMsisdn = req.body.phone;
-  const amount = req.body.amount;
-  const callbackUrl = "https://us-central1-devsrkcreations.cloudfunctions.net/api/mpesa/hook";
-  const accountRef = "SRK CREATIONS"; // Account Ref
-  const TransactionType = "CustomerBuyGoodsOnline";
-
-  LipaNaMpesa.lipaNaMpesaOnline(
-    senderMsisdn,
-    amount,
-    callbackUrl,
-    accountRef,
-    TransactionType
-  )
-    .then((response) => {
-      // eslint-disable-next-line promise/always-return
-      if (response.data.ResponseCode === '0'){
-        return res.status(200).json({
-          Success: 'Check your phone. Enter your mpesa Pin To Complete Transaction'
-        })
-      }
-    })
-    .catch(err => console.error(err));
-    // TODO: Send Error to angular App
-}
+module.exports = { LipaNaMpesa };
