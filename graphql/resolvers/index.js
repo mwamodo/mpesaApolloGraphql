@@ -1,10 +1,10 @@
-const mpesaResolvers = require('./mpesa');
+const c2b = require('./c2b');
 
-modules.exports = {
+module.exports = {
   Query: {
-    ...mpesaResolvers.Query,
+    ...c2b.Query,
   },
-  Mutation: {
-    ...mpesaResolvers.Mutation,
-  },
+  // Mutation: {
+  //   ...c2b.Mutation,
+  // },
 };
